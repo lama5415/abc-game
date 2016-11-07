@@ -35,6 +35,14 @@ class App extends Component {
                         x: 0,
                         y: 0
                     }
+                }, {
+                    index: 4,
+                    minuscule: 'd',
+                    majuscule: 'D',
+                    position: {
+                        x: 0,
+                        y: 0
+                    }
                 }
             ],
             lettres: [
