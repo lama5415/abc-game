@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import Draggable from 'react-draggable';
+import Letter from './Letter'
 
 class App extends Component {
 
@@ -106,7 +107,7 @@ type DraggableData = {
   lastX: number, lastY: number
 };*/
 
-    handleStop(event, ui, position, minuscule) {
+    handleStopLetter(event, ui, position, minuscule) {
         console.log('handleStop parent');
         console.log('Event: ', event);
         console.log('Position: ', ui.x + ' : ' + ui.y);
@@ -171,7 +172,7 @@ type DraggableData = {
                         </Draggable>
 
                         {this.state.alphabet.map(function(letter) {
-                            return (<Letter key={letter.index} index={letter.index} position={letter.position} handleStop={this.handleStop} minuscule={letter.minuscule} majuscule={letter.majuscule}/>)
+                            return (<Letter key={letter.index} index={letter.index} position={letter.position} handleStop={this.handleStopLetter} minuscule={letter.minuscule} majuscule={letter.majuscule}/>)
                         }, this)}
 
                         {/*  <Draggable key={letter.index} position={letter.position} zIndex="{100}"
@@ -218,67 +219,6 @@ type DraggableData = {
     }
 }
 
-class Letter extends Component {
-    constructor(props) {
-        super(props);
-        this.handleStop = this.handleStop.bind(this);
-        this.state = {
-            controlledPosition: this.props.position
-        }
-    }
 
-    handleStart(event, ui) {
-        console.log('handleStart');
-        console.log('Event: ', event);
-        console.log('Position: ', ui.x);
-    }
-
-    handleDrag(event, ui) {
-        console.log('handleDrag');
-        console.log('Event: ', event);
-        console.log('Position: ', ui.x);
-    }
-
-    handleStop(event, ui) {
-        console.log('handleStop');
-        console.log('Event: ', event);
-        console.log('Position: ', ui.x + ' : ' + ui.y);
-        console.log(ui.node);
-        //  const {x, y} = position;
-        //this.setState({controlledPosition: {20, 100}});
-        if (this.props.handleStop(event, ui, this.props.position, this.props.minuscule)) {
-            this.setState({
-                controlledPosition: {
-                    x: ui.x,
-                    y: ui.y
-                }
-            });
-        };
-    }
-
-    /*clickHandler(e) {
-        this.props.tileClick(e.target, this.props.position, this.props.numero);
-    }*/
-
-    render() {
-        let dragHandlers = {
-            onStart: this.handleStart,
-            onStop: this.handleStop
-        };
-        return (
-            <div>
-                <Draggable position={this.state.controlledPosition} zIndex={100} onDrag={this.handleDrag} {...dragHandlers}>
-                    <button style={{
-                        position: 'absolute',
-                        top: 78 * this.props.index,
-                        right: '150px'
-                    }} type="button" className="btn btn-info btn-circle btn-xl">
-                        {this.props.majuscule}
-                    </button>
-                </Draggable>
-            </div>
-        );
-    }
-}
 
 export default App;
