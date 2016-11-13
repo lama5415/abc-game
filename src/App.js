@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import Draggable from 'react-draggable';
-import Letter from './Letter'
+import LetterStack from './LetterStack'
 
 class App extends Component {
 
@@ -16,34 +16,106 @@ class App extends Component {
                     index: 1,
                     minuscule: 'a',
                     majuscule: 'A',
-                    position: {
-                        x: 0,
-                        y: 0
-                    }
                 }, {
                     index: 2,
                     minuscule: 'b',
                     majuscule: 'B',
-                    position: {
-                        x: 0,
-                        y: 0
-                    }
                 }, {
                     index: 3,
                     minuscule: 'c',
                     majuscule: 'C',
-                    position: {
-                        x: 0,
-                        y: 0
-                    }
                 }, {
                     index: 4,
                     minuscule: 'd',
                     majuscule: 'D',
-                    position: {
-                        x: 0,
-                        y: 0
-                    }
+                }, {
+                    index: 5,
+                    minuscule: 'e',
+                    majuscule: 'E',
+                }, {
+                    index: 6,
+                    minuscule: 'f',
+                    majuscule: 'F',
+                }, {
+                    index: 7,
+                    minuscule: 'g',
+                    majuscule: 'G',
+                }, {
+                    index: 8,
+                    minuscule: 'h',
+                    majuscule: 'H',
+                }, {
+                    index: 9,
+                    minuscule: 'i',
+                    majuscule: 'I',
+                }, {
+                    index: 10,
+                    minuscule: 'j',
+                    majuscule: 'J',
+                }, {
+                    index: 11,
+                    minuscule: 'k',
+                    majuscule: 'K',
+                }, {
+                    index: 12,
+                    minuscule: 'l',
+                    majuscule: 'L',
+                }, {
+                    index: 13,
+                    minuscule: 'm',
+                    majuscule: 'M',
+                }, {
+                    index: 14,
+                    minuscule: 'n',
+                    majuscule: 'N',
+                }, {
+                    index: 15,
+                    minuscule: 'o',
+                    majuscule: 'O',
+                }, {
+                    index: 16,
+                    minuscule: 'p',
+                    majuscule: 'P',
+                }, {
+                    index: 17,
+                    minuscule: 'q',
+                    majuscule: 'Q',
+                }, {
+                    index: 18,
+                    minuscule: 'r',
+                    majuscule: 'R',
+                }, {
+                    index: 19,
+                    minuscule: 's',
+                    majuscule: 'S',
+                }, {
+                    index: 20,
+                    minuscule: 't',
+                    majuscule: 'T',
+                }, {
+                    index: 21,
+                    minuscule: 'u',
+                    majuscule: 'U',
+                }, {
+                    index: 22,
+                    minuscule: 'v',
+                    majuscule: 'V',
+                }, {
+                    index: 23,
+                    minuscule: 'w',
+                    majuscule: 'W',
+                }, {
+                    index: 24,
+                    minuscule: 'x',
+                    majuscule: 'X',
+                }, {
+                    index: 25,
+                    minuscule: 'y',
+                    majuscule: 'Y',
+                }, {
+                    index: 26,
+                    minuscule: 'z',
+                    majuscule: 'Z',
                 }
             ],
             lettres: [
@@ -81,20 +153,8 @@ class App extends Component {
                 'O',
                 'U',
                 'Y'
-            ],
-            deltaPosition: {
-                x: 0,
-                y: 0
-            },
-            controlledPosition: {
-                x: -400,
-                y: 200
-            }
-        }
-
-        //this.tileClick = this.tileClick.bind(this);
-        //this.shuffle = this.shuffle.bind(this);
-        //this.restartGame = this.restartGame.bind(this);
+            ]
+          }
     }
 
     /*
@@ -118,102 +178,24 @@ type DraggableData = {
         } else {
             return false;
         }
-        //  const {x, y} = position;
-        //  this.setState({controlledPosition: {x, y}});
-        //}
-        //this.props.handleStop(event, ui, this.props.position, this.props.minuscule);
     }
 
     render() {
 
         return (
             <div className="App">
-                {/*<div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-          </div>
-          */}
                 <div>
-
                     <div className="col-sm-8" id="left">
-                        <Draggable>
                             <div>
-                                Left contents
+                                reset
                             </div>
-                        </Draggable>
                     </div>
-
                     <div className="col-sm-4" id="right">
-                        {/*this.state.lettres.map(function(letter) {
-                return ( <div className="button">{letter}</div> )
-                }, this)
-
-                <button type="button" class="btn btn-warning btn-circle btn-xl"><i class="glyphicon glyphicon-remove"></i></button>
-
-                */}
-
-                        {/*this.state.lettres.map(function(letter) {
-                  return ( <div><button
-                  type="button"
-                  className={this.state.voyelles.includes(letter) ? 'btn btn-warning btn-circle btn-xl' : 'btn btn-info btn-circle btn-xl'} >
-                  {letter}
-                  </button>
-                  </div> )
-                  }, this)*/}
-                        <Draggable bounds={{
-                            top: -100,
-                            left: -500,
-                            right: 100,
-                            bottom: 100
-                        }} zIndex={100}>
-                            <div>
-                                I can now be moved around!
-                            </div>
-                        </Draggable>
-
                         {this.state.alphabet.map(function(letter) {
-                            return (<Letter key={letter.index} index={letter.index} position={letter.position} handleStop={this.handleStopLetter} minuscule={letter.minuscule} majuscule={letter.majuscule}/>)
+                            return (<LetterStack key={letter.index} index={letter.index} position={{x: 0,y: 0}} handleStop={this.handleStopLetter} minuscule={letter.minuscule} majuscule={letter.majuscule}/>)
                         }, this)}
-
-                        {/*  <Draggable key={letter.index} position={letter.position} zIndex="{100}"
-                      onDrag={this.handleDrag}
-                      {...dragHandlers}>
-                      <button
-                        type="button"
-                        className="btn btn-info btn-circle btn-xl" >
-                        {letter.majuscule}
-                      </button>
-                    </Draggable>
-                  */}
-
                     </div>
-
                 </div>
-
-                {/*    <Grid>
-                <Row className="show-grid">
-                <Col xs={8} md={8} sm={8}><code>&lt;{'Col xs={12} md={8}'} /&gt;</code></Col>
-                <Col xs={4} md={4} sm={4}>
-                {this.state.lettres.map(function(letter) {
-                return ( <Button bsStyle={this.state.voyelles.includes(letter) ? 'success' : 'primary' } bsSize="large" block>{letter}</Button> )
-              }, this)}
-            </Col>
-          </Row>
-        </Grid>
-        */}
-                {/*
-          <div className="row">
-          <div >
-          Normal scrollable content
-        </div>
-        <div className=" sidebar">
-        {this.state.lettres.map(function(letter) {
-        return ( <Button bsStyle={this.state.voyelles.includes(letter) ? 'success' : 'primary' } bsSize="large" block>{letter}</Button> )
-      }, this)}
-
-      Fixed content
-    </div>
-  </div>*/}
             </div>
         );
     }
