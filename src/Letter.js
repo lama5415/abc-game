@@ -7,6 +7,7 @@ class Letter extends Component {
     constructor(props) {
         super(props);
         this.handleStop = this.handleStop.bind(this);
+        this.handleStart = this.handleStart.bind(this);
         this.state = {
             controlledPosition: this.props.position,
             typePosition: 'absolute',
@@ -24,6 +25,7 @@ class Letter extends Component {
         console.log('handleStart');
         console.log('Event: ', event);
         console.log('Position: ', ui.x);
+        this.props.handleStart();
     }
 
     handleDrag(event, ui) {
@@ -46,7 +48,7 @@ class Letter extends Component {
                     y: ui.y
                 },
                 typePosition: 'fixed',
-                disabled : true
+                disabled : false
             });
         };
     }

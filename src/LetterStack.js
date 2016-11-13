@@ -13,23 +13,29 @@ class LetterStack extends Component {
             typePosition: 'absolute',
             disabled : false
         }*/
+        this.handleStart = this.handleStart.bind(this);
         this.state = {
-          stack : [<Letter key={this.props.index} index={this.props.index} position={{x: 0,y: 0}}
-            handleStop={this.props.handleStop} handleStart="this.handleStart" minuscule={this.props.minuscule}
+          letters : [<Letter index={this.props.index} position={{x: 0,y: 0}}
+            handleStop={this.props.handleStop} handleStart={this.handleStart} minuscule={this.props.minuscule}
             majuscule={this.props.majuscule}/>]
         }
     }
 
-  /*  handleStart(){
-      this.state.stack.push(stack : [<Letter index={this.props.index} position={{x: 0,y: 0}}
-        handleStop={this.props.handleStop} handleStart="this.handleStart" minuscule={this.props.minuscule}
-        majuscule={this.props.majuscule}/>]);
-    }*/
+    handleStart(){
+      console.log('handleStart : ajout dune lettre dans la pile');
+        var letters = this.state.letters;
+        letters.push(<Letter index={this.props.index} position={{x: 0,y: 0}}
+          handleStop={this.props.handleStop} handleStart={this.handleStart} minuscule={this.props.minuscule}
+          majuscule={this.props.majuscule}/>);
+
+        this.setState({ letters: letters });
+    }
+
 
     render() {
         return (
           <div>
-            {this.state.stack.map(function(element) {
+            {this.state.letters.map(function(element) {
                 return (element)
             }, this)}
           </div>

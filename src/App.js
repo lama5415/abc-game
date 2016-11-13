@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import Draggable from 'react-draggable';
-import LetterStack from './LetterStack'
+import LetterStack from './LetterStack';
 
 class App extends Component {
 
@@ -173,11 +173,11 @@ type DraggableData = {
         console.log('Position: ', ui.x + ' : ' + ui.y);
         console.log(ui.node);
         console.log(minuscule);
-        if (minuscule == 'b') {
+        //if (minuscule === 'b') {
             return true;
-        } else {
-            return false;
-        }
+        //} else {
+            //return false;
+        //}
     }
 
     render() {
