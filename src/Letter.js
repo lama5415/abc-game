@@ -41,14 +41,26 @@ class Letter extends Component {
         console.log(ui.node);
         //  const {x, y} = position;
         //this.setState({controlledPosition: {20, 100}});
+
+        console.log(ui.node);
+        console.log(document.documentElement.scrollTop);
+        //let xScroll = ui.node.scrollLeft || document.documentElement.scrollLeft;
+        //let yScroll = ui.node.scrollTop || document.documentElement.scrollTop;
+        //let xScroll = document.documentElement.scrollLeft;
+        //let yScroll = document.documentElement.scrollTop;
+        let yScroll = window.pageYOffset;
+
+//console.log(xScroll);
+console.log(yScroll);
+
         if (this.props.handleStop(event, ui, this.props.position, this.props.minuscule)) {
             this.setState({
                 controlledPosition: {
                     x: ui.x,
-                    y: ui.y
+                    y: ui.y - yScroll
                 },
                 typePosition: 'fixed',
-                disabled : false
+                disabled : true
             });
         };
     }
@@ -70,8 +82,8 @@ class Letter extends Component {
               style = {
                   {
                       position: this.state.typePosition,
-                      top: 78 * this.props.index,
-                      right: '100'
+                      //top: 78 * this.props.index,
+                      //right: '100'
                   }
               }
               type = "button"

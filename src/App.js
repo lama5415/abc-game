@@ -183,20 +183,28 @@ type DraggableData = {
     render() {
 
         return (
-            <div className="App">
-                <div>
-                    <div className="col-sm-8" id="left">
-                            <div>
-                                reset
-                            </div>
-                    </div>
-                    <div className="col-sm-4" id="right">
-                        {this.state.alphabet.map(function(letter) {
-                            return (<LetterStack key={letter.index} index={letter.index} position={{x: 0,y: 0}} handleStop={this.handleStopLetter} minuscule={letter.minuscule} majuscule={letter.majuscule}/>)
-                        }, this)}
-                    </div>
-                </div>
+          <div className="App">
+            <div>
+            <div className="col-sm-9" id="left">
+              <div>
+                reset
+              </div>
             </div>
+            <div className="col-sm-3" id="right" ref="palette">
+              {this.state.alphabet.map(function(letter) {
+                return (
+                  <LetterStack
+                    key={letter.index}
+                    index={letter.index}
+                    position={{x: 0,y: 0}}
+                    handleStop={this.handleStopLetter}
+                    minuscule={letter.minuscule}
+                    majuscule={letter.majuscule}/>
+                )
+              }, this)}
+            </div>
+            </div>
+          </div>
         );
     }
 }
