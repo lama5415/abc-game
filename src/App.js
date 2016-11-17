@@ -9,113 +9,115 @@ class App extends Component {
 
     constructor(props, state) {
         super(props, state);
+
         this.state = {
             // initial state of game board
+            word : 'TOTO',
             alphabet: [
                 {
                     index: 1,
                     minuscule: 'a',
-                    majuscule: 'A',
+                    majuscule: 'A'
                 }, {
                     index: 2,
                     minuscule: 'b',
-                    majuscule: 'B',
+                    majuscule: 'B'
                 }, {
                     index: 3,
                     minuscule: 'c',
-                    majuscule: 'C',
+                    majuscule: 'C'
                 }, {
                     index: 4,
                     minuscule: 'd',
-                    majuscule: 'D',
+                    majuscule: 'D'
                 }, {
                     index: 5,
                     minuscule: 'e',
-                    majuscule: 'E',
+                    majuscule: 'E'
                 }, {
                     index: 6,
                     minuscule: 'f',
-                    majuscule: 'F',
+                    majuscule: 'F'
                 }, {
                     index: 7,
                     minuscule: 'g',
-                    majuscule: 'G',
+                    majuscule: 'G'
                 }, {
                     index: 8,
                     minuscule: 'h',
-                    majuscule: 'H',
+                    majuscule: 'H'
                 }, {
                     index: 9,
                     minuscule: 'i',
-                    majuscule: 'I',
+                    majuscule: 'I'
                 }, {
                     index: 10,
                     minuscule: 'j',
-                    majuscule: 'J',
+                    majuscule: 'J'
                 }, {
                     index: 11,
                     minuscule: 'k',
-                    majuscule: 'K',
+                    majuscule: 'K'
                 }, {
                     index: 12,
                     minuscule: 'l',
-                    majuscule: 'L',
+                    majuscule: 'L'
                 }, {
                     index: 13,
                     minuscule: 'm',
-                    majuscule: 'M',
+                    majuscule: 'M'
                 }, {
                     index: 14,
                     minuscule: 'n',
-                    majuscule: 'N',
+                    majuscule: 'N'
                 }, {
                     index: 15,
                     minuscule: 'o',
-                    majuscule: 'O',
+                    majuscule: 'O'
                 }, {
                     index: 16,
                     minuscule: 'p',
-                    majuscule: 'P',
+                    majuscule: 'P'
                 }, {
                     index: 17,
                     minuscule: 'q',
-                    majuscule: 'Q',
+                    majuscule: 'Q'
                 }, {
                     index: 18,
                     minuscule: 'r',
-                    majuscule: 'R',
+                    majuscule: 'R'
                 }, {
                     index: 19,
                     minuscule: 's',
-                    majuscule: 'S',
+                    majuscule: 'S'
                 }, {
                     index: 20,
                     minuscule: 't',
-                    majuscule: 'T',
+                    majuscule: 'T'
                 }, {
                     index: 21,
                     minuscule: 'u',
-                    majuscule: 'U',
+                    majuscule: 'U'
                 }, {
                     index: 22,
                     minuscule: 'v',
-                    majuscule: 'V',
+                    majuscule: 'V'
                 }, {
                     index: 23,
                     minuscule: 'w',
-                    majuscule: 'W',
+                    majuscule: 'W'
                 }, {
                     index: 24,
                     minuscule: 'x',
-                    majuscule: 'X',
+                    majuscule: 'X'
                 }, {
                     index: 25,
                     minuscule: 'y',
-                    majuscule: 'Y',
+                    majuscule: 'Y'
                 }, {
                     index: 26,
                     minuscule: 'z',
-                    majuscule: 'Z',
+                    majuscule: 'Z'
                 }
             ],
             lettres: [
@@ -154,7 +156,7 @@ class App extends Component {
                 'U',
                 'Y'
             ]
-          }
+        }
     }
 
     /*
@@ -174,41 +176,40 @@ type DraggableData = {
         console.log(ui.node);
         console.log(minuscule);
         //if (minuscule === 'b') {
-            return true;
+        return true;
         //} else {
-            //return false;
+        //return false;
         //}
     }
 
     render() {
 
         return (
-          <div className="App">
-            <div>
-            <div className="col-sm-9" id="left">
-              <div>
-                reset
-              </div>
+            <div className="App">
+                <div class="container">
+                    <div className="col-sm-9" id="left">
+                        <div id="board">
+                          <p className="olive">
+                            {this.state.word}
+                          </p>
+                          {this.state.word.split('').map(function(letter) {
+                              return (<button type="button" className="btn btn-info btn-circle btn-xl"></button>)
+                          }, this
+                          )}
+                        </div>
+                    </div>
+                    <div className="col-sm-3" id="right" ref="palette">
+                        {this.state.alphabet.map(function(letter) {
+                            return (<LetterStack key={letter.index} index={letter.index} position={{
+                                x: 0,
+                                y: 0
+                            }} handleStop={this.handleStopLetter} minuscule={letter.minuscule} majuscule={letter.majuscule}/>)
+                        }, this)}
+                    </div>
+                </div>
             </div>
-            <div className="col-sm-3" id="right" ref="palette">
-              {this.state.alphabet.map(function(letter) {
-                return (
-                  <LetterStack
-                    key={letter.index}
-                    index={letter.index}
-                    position={{x: 0,y: 0}}
-                    handleStop={this.handleStopLetter}
-                    minuscule={letter.minuscule}
-                    majuscule={letter.majuscule}/>
-                )
-              }, this)}
-            </div>
-            </div>
-          </div>
         );
     }
 }
-
-
 
 export default App;
