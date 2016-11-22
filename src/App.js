@@ -4,14 +4,20 @@ import './App.css';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import Draggable from 'react-draggable';
 import LetterStack from './LetterStack';
+import FixedLetter from './FixedLetter';
+
 
 class App extends Component {
 
     constructor(props, state) {
         super(props, state);
+this.handleStopLetter=this.handleStopLetter.bind(this);
+this.handleFixedLetterPosition = this.handleFixedLetterPosition.bind(this);
 
         this.state = {
             // initial state of game board
+            currentLetterIndex : 0,
+            fixedLettersPosition : [],
             word : 'TOTO',
             alphabet: [
                 {
@@ -169,33 +175,92 @@ type DraggableData = {
   lastX: number, lastY: number
 };*/
 
+    checkOverlap(rect1,rect2){
+      return !(rect1.right < rect2.left ||
+                      rect1.left > rect2.right ||
+                      rect1.bottom < rect2.top ||
+                      rect1.top > rect2.bottom);
+    }
+
     handleStopLetter(event, ui, position, minuscule) {
         console.log('handleStop parent');
         console.log('Event: ', event);
         console.log('Position: ', ui.x + ' : ' + ui.y);
         console.log(ui.node);
         console.log(minuscule);
+
+
+        const currentLetter = this.state.word[this.state.currentLetterIndex];
+        const currentLetterPosition = this.state.fixedLettersPosition[this.state.currentLetterIndex];
+
+        const droppedLetterPosition = ui.node.getBoundingClientRect();
+
+        const overlap = this.checkOverlap(currentLetterPosition, droppedLetterPosition);
+        const match = (minuscule.toUpperCase()===currentLetter)
+
+        // rect est un objet DOMRect avec 6 propriétés
+        // left, top, right, bottom, width, height
+        console.log('current letter : ' + currentLetter);
+        console.log('current letter position : ' + currentLetterPosition.left);
+        console.log('letter left : ' + ui.node.getBoundingClientRect().left);
+        console.log('overlap? ' + overlap);
+        console.log('match ? ' + match);
+
+        if(overlap && match){
+          let currentLetterIndex = this.state.currentLetterIndex;
+          currentLetterIndex++;
+          this.setState({currentLetterIndex : currentLetterIndex});
+        }
+
         //if (minuscule === 'b') {
-        return true;
+
+//console.log(fixedLetters.length);
+
+
+        /*return { overlap : overlap ,
+          match : match,
+          deltaX : currentLetterPosition.left - droppedLetterPosition.left,
+          deltaY : currentLetterPosition.top - droppedLetterPosition.top
+        }*/
+
+        return (overlap && match)
         //} else {
         //return false;
         //}
     }
 
+    handleFixedLetterPosition(index, clientRect){
+      console.log(index + ' : ' + clientRect);
+      this.state.fixedLettersPosition[index]=clientRect;
+    }
+
     render() {
+
+      const fixedLetters=this.state.word.split('').map(function(letter,index) {
+        if (this.state.currentLetterIndex<=index){
+          return (<FixedLetter key={index} index={index} handlePositionChange={this.handleFixedLetterPosition} letter=''/>)
+        }
+        else {
+          return (<FixedLetter key={index} index={index} handlePositionChange={this.handleFixedLetterPosition} letter={letter}/>)
+        }
+      }, this
+      );
 
         return (
             <div className="App">
-                <div class="container">
+                <div className="container">
                     <div className="col-sm-9" id="left">
                         <div id="board">
-                          <p className="olive">
-                            {this.state.word}
-                          </p>
-                          {this.state.word.split('').map(function(letter) {
-                              return (<button type="button" className="btn btn-info btn-circle btn-xl"></button>)
-                          }, this
-                          )}
+                          <div id="word-template" className="olive">
+                            {/*this.state.word*/}
+                            {this.state.word.split('').map(function(letter, index) {
+                                return (<button key={index} type="button" className="btn btn-info btn-circle btn-xl" >{letter}</button>)
+                            }, this
+                            )}
+                          </div>
+                          <div id="fixed-letters">
+                          {fixedLetters}
+                          </div>
                         </div>
                     </div>
                     <div className="col-sm-3" id="right" ref="palette">

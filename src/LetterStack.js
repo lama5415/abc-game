@@ -1,7 +1,6 @@
 import React, {
     Component
 } from 'react';
-import Draggable from 'react-draggable';
 import Letter from './Letter';
 
 class LetterStack extends Component {
@@ -13,14 +12,14 @@ class LetterStack extends Component {
             typePosition: 'absolute',
             disabled : false
         }*/
-        this.handleStart = this.handleStart.bind(this);
+        this.handleStop = this.handleStop.bind(this);
 
         var letters = [];
-        for (var i = 0; i < 3; i++) {
+        //for (var i = 0; i < 3; i++) {
           letters.push(<Letter index={this.props.index} position={{x: 0,y: 0}}
-            handleStop={this.props.handleStop} handleStart={this.handleStart} minuscule={this.props.minuscule}
+            handleStop={this.handleStop} minuscule={this.props.minuscule}
             majuscule={this.props.majuscule}/>);
-          }
+        //  }
 
         this.state = {
           /*letters : [
@@ -51,7 +50,7 @@ class LetterStack extends Component {
               }
               </button>
             <Letter offsetParent={this.props.offsetParent} index={this.props.index} position={{x: 0,y: 0}}
-            handleStop={this.props.handleStop} handleStart={this.handleStart} minuscule={this.props.minuscule}
+            handleStop={this.props.handleStop} handleStop={this.handleStop} minuscule={this.props.minuscule}
             majuscule={this.props.majuscule}/>
           </div>
         ]*/
@@ -59,20 +58,19 @@ class LetterStack extends Component {
         }
     }
 
-    handleStart(){
-      console.log('handleStart : ajout dune lettre dans la pile');
-        /*var letters = this.state.letters;
-        letters.push(<Letter index={this.props.index} position={{x: 0,y: 0}}
-          handleStop={this.props.handleStop} handleStart={this.handleStart} minuscule={this.props.minuscule}
-          majuscule={this.props.majuscule}/>);
+    handleStop(event, ui, position, minuscule){
+      console.log('handleStop : ajout dune lettre dans la pile');
+        let letters = this.state.letters;
+        letters.push(<Letter index={this.props.index} position={{x: 0,y: 0}} handleStop={this.handleStop} minuscule={this.props.minuscule} majuscule={this.props.majuscule}/>);
 
-        this.setState({ letters: letters });*/
+        this.setState({ letters: letters });
+        return this.props.handleStop(event, ui, position, minuscule);
     }
 
 
     render() {
         return (
-          <div style = {
+          <div style={
               {
                 width: '100px',
                 height: '100px',
@@ -82,7 +80,7 @@ class LetterStack extends Component {
               }
           }>
           <button
-            style = {
+            style={
                 {
                     position: 'absolute',
                     top : 0,
@@ -92,8 +90,8 @@ class LetterStack extends Component {
                     opacity: 0.2
                 }
             }
-          type = "button"
-          className = "btn btn-info btn-circle btn-xl" >
+          type="button"
+          className="btn btn-info btn-circle btn-xl" >
           {
               this.props.majuscule
           }
