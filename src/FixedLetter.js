@@ -12,7 +12,7 @@ class FixedLetter extends Component {
 
     render() {
         return (
-            <button type="button" ref={(button) => { this.letter = button; }}  className="btn btn-info btn-circle btn-xl" >{this.props.letter}</button>
+            <button type="button" ref={(button) => { this.letter = button; }}  className="animated bounce btn btn-info btn-circle btn-xl" >{this.props.letter}</button>
             );
           }
       }

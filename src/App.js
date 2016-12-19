@@ -1,5 +1,10 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
+import fee from './img/fee.svg';
+import applaudissement0 from './img/applaudissement0.gif';
+import applaudissement1 from './img/applaudissement1.gif';
+import applaudissement2 from './img/applaudissement2.gif';
+
 import './App.css';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import Draggable from 'react-draggable';
@@ -16,9 +21,10 @@ this.handleFixedLetterPosition = this.handleFixedLetterPosition.bind(this);
 
         this.state = {
             // initial state of game board
+            win : false,
             currentLetterIndex : 0,
             fixedLettersPosition : [],
-            word : 'TOTO',
+            word : 'PAPA',
             alphabet: [
                 {
                     index: 1,
@@ -204,12 +210,16 @@ type DraggableData = {
         console.log('current letter position : ' + currentLetterPosition.left);
         console.log('letter left : ' + ui.node.getBoundingClientRect().left);
         console.log('overlap? ' + overlap);
-        console.log('match ? ' + match);
+        console.log('match? ' + match);
 
         if(overlap && match){
           let currentLetterIndex = this.state.currentLetterIndex;
           currentLetterIndex++;
-          this.setState({currentLetterIndex : currentLetterIndex});
+          if (currentLetterIndex===this.state.word.length){
+              this.setState({currentLetterIndex : currentLetterIndex, win : true});
+          }else{
+              this.setState({currentLetterIndex : currentLetterIndex});
+            }
         }
 
         //if (minuscule === 'b') {
@@ -234,6 +244,16 @@ type DraggableData = {
       this.state.fixedLettersPosition[index]=clientRect;
     }
 
+    // On renvoie un entier aléatoire entre une valeur min (incluse)
+    // et une valeur max (incluse).
+    // Attention : si on utilisait Math.round(), on aurait une distribution
+    // non uniforme !
+    getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min +1)) + min;
+    }
+
     render() {
 
       const fixedLetters=this.state.word.split('').map(function(letter,index) {
@@ -246,12 +266,19 @@ type DraggableData = {
       }, this
       );
 
+      //const applaudissement = 'applaudissement' + this.getRandomIntInclusive(1,2);
+      const applaudissement = applaudissement0;
+
+// TODO Animer la fee :https://advancedweb.hu/2016/01/12/custom_css_animations_in_react/
         return (
             <div className="App">
                 <div className="container">
                     <div className="col-sm-9" id="left">
-                        <div id="board">
-                          <div id="word-template" className="olive">
+                      <div className="col-sm-3">
+                        <img src={this.state.win ? applaudissement : fee} alt={this.state.win ? applaudissement : fee}/>
+                      </div>
+                        <div className="col-sm-9" id="board">
+                          <div id="word-template" className="animated bounceInDown">
                             {/*this.state.word*/}
                             {this.state.word.split('').map(function(letter, index) {
                                 return (<button key={index} type="button" className="btn btn-info btn-circle btn-xl" >{letter}</button>)
@@ -263,7 +290,7 @@ type DraggableData = {
                           </div>
                         </div>
                     </div>
-                    <div className="col-sm-3" id="right" ref="palette">
+                    <div className="animated bounceInRight col-sm-3" id="right" ref="palette">
                         {this.state.alphabet.map(function(letter) {
                             return (<LetterStack key={letter.index} index={letter.index} position={{
                                 x: 0,
