@@ -1,18 +1,30 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
+import fee from './img/fee.svg';
+import applaudissement0 from './img/applaudissement0.gif';
+import applaudissement1 from './img/applaudissement1.gif';
+import applaudissement2 from './img/applaudissement2.gif';
+
 import './App.css';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import Draggable from 'react-draggable';
 import LetterStack from './LetterStack';
+import FixedLetter from './FixedLetter';
+
 
 class App extends Component {
 
     constructor(props, state) {
         super(props, state);
+this.handleStopLetter=this.handleStopLetter.bind(this);
+this.handleFixedLetterPosition = this.handleFixedLetterPosition.bind(this);
 
         this.state = {
             // initial state of game board
-            word : 'TOTO',
+            win : false,
+            currentLetterIndex : 0,
+            fixedLettersPosition : [],
+            word : 'PAPA',
             alphabet: [
                 {
                     index: 1,
@@ -169,36 +181,116 @@ type DraggableData = {
   lastX: number, lastY: number
 };*/
 
+    checkOverlap(rect1,rect2){
+      return !(rect1.right < rect2.left ||
+                      rect1.left > rect2.right ||
+                      rect1.bottom < rect2.top ||
+                      rect1.top > rect2.bottom);
+    }
+
     handleStopLetter(event, ui, position, minuscule) {
         console.log('handleStop parent');
         console.log('Event: ', event);
         console.log('Position: ', ui.x + ' : ' + ui.y);
         console.log(ui.node);
         console.log(minuscule);
+
+
+        const currentLetter = this.state.word[this.state.currentLetterIndex];
+        const currentLetterPosition = this.state.fixedLettersPosition[this.state.currentLetterIndex];
+
+        const droppedLetterPosition = ui.node.getBoundingClientRect();
+
+        const overlap = this.checkOverlap(currentLetterPosition, droppedLetterPosition);
+        const match = (minuscule.toUpperCase()===currentLetter)
+
+        // rect est un objet DOMRect avec 6 propriétés
+        // left, top, right, bottom, width, height
+        console.log('current letter : ' + currentLetter);
+        console.log('current letter position : ' + currentLetterPosition.left);
+        console.log('letter left : ' + ui.node.getBoundingClientRect().left);
+        console.log('overlap? ' + overlap);
+        console.log('match? ' + match);
+
+        if(overlap && match){
+          let currentLetterIndex = this.state.currentLetterIndex;
+          currentLetterIndex++;
+          if (currentLetterIndex===this.state.word.length){
+              this.setState({currentLetterIndex : currentLetterIndex, win : true});
+          }else{
+              this.setState({currentLetterIndex : currentLetterIndex});
+            }
+        }
+
         //if (minuscule === 'b') {
-        return true;
+
+//console.log(fixedLetters.length);
+
+
+        /*return { overlap : overlap ,
+          match : match,
+          deltaX : currentLetterPosition.left - droppedLetterPosition.left,
+          deltaY : currentLetterPosition.top - droppedLetterPosition.top
+        }*/
+
+        return (overlap && match)
         //} else {
         //return false;
         //}
     }
 
+    handleFixedLetterPosition(index, clientRect){
+      console.log(index + ' : ' + clientRect);
+      this.state.fixedLettersPosition[index]=clientRect;
+    }
+
+    // On renvoie un entier aléatoire entre une valeur min (incluse)
+    // et une valeur max (incluse).
+    // Attention : si on utilisait Math.round(), on aurait une distribution
+    // non uniforme !
+    getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min +1)) + min;
+    }
+
     render() {
 
+      const fixedLetters=this.state.word.split('').map(function(letter,index) {
+        if (this.state.currentLetterIndex<=index){
+          return (<FixedLetter key={index} index={index} handlePositionChange={this.handleFixedLetterPosition} letter=''/>)
+        }
+        else {
+          return (<FixedLetter key={index} index={index} handlePositionChange={this.handleFixedLetterPosition} letter={letter}/>)
+        }
+      }, this
+      );
+
+      //const applaudissement = 'applaudissement' + this.getRandomIntInclusive(1,2);
+      const applaudissement = applaudissement0;
+
+// TODO Animer la fee :https://advancedweb.hu/2016/01/12/custom_css_animations_in_react/
         return (
             <div className="App">
-                <div class="container">
+                <div className="container">
                     <div className="col-sm-9" id="left">
-                        <div id="board">
-                          <p className="olive">
-                            {this.state.word}
-                          </p>
-                          {this.state.word.split('').map(function(letter) {
-                              return (<button type="button" className="btn btn-info btn-circle btn-xl"></button>)
-                          }, this
-                          )}
+                      <div className="col-sm-3">
+                        <img src={this.state.win ? applaudissement : fee} alt={this.state.win ? applaudissement : fee}/>
+                      </div>
+                        <div className="col-sm-9" id="board">
+                          <div id="word-template" className="animated bounceInDown">
+                            {/*this.state.word*/}
+                            {this.state.word.split('').map(function(letter, index) {
+                                return (<button key={index} type="button" className="btn btn-info btn-circle btn-xl" >{letter}</button>)
+                            }, this
+                            )}
+                          </div>
+                          <div id="fixed-letters">
+                          {fixedLetters}
+                          </div>
                         </div>
                     </div>
-                    <div className="col-sm-3" id="right" ref="palette">
+                    <div className="animated bounceInRight col-sm-3" id="right" ref="palette">
                         {this.state.alphabet.map(function(letter) {
                             return (<LetterStack key={letter.index} index={letter.index} position={{
                                 x: 0,
