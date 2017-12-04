@@ -1,5 +1,7 @@
 # abc-game
 
+## Installation
+
 Pour intaller les dépendances faire :
 ```
 npm install
